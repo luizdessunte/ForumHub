@@ -18,29 +18,34 @@ Bem-vindo ao **ForumHub**! Esta é uma API REST desenvolvida como parte do desaf
 
 O foco inicial foi construir um CRUD robusto e funcional para o recurso principal: os **Tópicos**.
 
--   [x] 🚀 **Cadastrar novo tópico:** `POST /topicos`
--   [x] 📄 **Listar todos os tópicos:** `GET /topicos` (com paginação e ordenação!)
--   [x] 🔍 **Detalhar um tópico específico:** `GET /topicos/{id}`
--   [x] ✏️ **Atualizar um tópico:** `PUT /topicos/{id}`
--   [x] 🗑️ **Apagar um tópico:** `DELETE /topicos/{id}`
-
-### 🚧 Próximos Passos
-
--   [ ] 🔐 **Segurança:** Implementar autenticação e autorização com Tokens JWT.
--   [ ] 🛡️ **Validações:** Adicionar tratamento de erros e validações de negócio avançadas.
--   [ ] 📖 **Documentação:** Gerar documentação da API com Swagger/OpenAPI.
+- Listar todos os tópicos com paginação.
+- Detalhar um tópico específico.
+- Atualizar um tópico.
+- Apagar um tópico.
 
 ---
 
-## 🔌 API Endpoints
+## 🚧 Funcionalidades Extras em Desenvolvimento
 
-| Verbo HTTP | Endpoint              | Descrição                                         |
-|------------|-----------------------|---------------------------------------------------|
-| `POST`     | `/topicos`            | Cadastra um novo tópico.                          |
-| `GET`      | `/topicos`            | Lista todos os tópicos (paginado e ordenado).     |
-| `GET`      | `/topicos/{id}`       | Detalha um tópico específico.                     |
-| `PUT`      | `/topicos/{id}`       | Atualiza um tópico existente.                     |
-| `DELETE`   | `/topicos/{id}`       | Apaga um tópico existente.                        |
+Além dos tópicos, novas rotas estão sendo implementadas para tornar o fórum ainda mais completo:
+
+- [ ] **Usuários** (`/usuario`): Cadastro, listagem, atualização e exclusão de usuários.
+- [ ] **Respostas** (`/respostas`): Cadastro, listagem, atualização e exclusão de respostas aos tópicos.
+
+Essas funcionalidades estão em desenvolvimento e serão lançadas em breve.
+
+---
+
+## 🧑‍💻 API Endpoints
+
+| Verbo HTTP | Endpoint         | Descrição                                              | Acesso     |
+|------------|------------------|--------------------------------------------------------|------------|
+| `POST`     | `/login`         | Autentica um utilizador e devolve um token JWT.        | **Público**|
+| `POST`     | `/topicos`       | Cadastra um novo tópico.                               | Protegido  |
+| `GET`      | `/topicos`       | Lista todos os tópicos (paginado e ordenado).          | Protegido  |
+| `GET`      | `/topicos/{id}`  | Detalha um tópico específico.                          | Protegido  |
+| `PUT`      | `/topicos/{id}`  | Atualiza um tópico existente.                          | Protegido  |
+| `DELETE`   | `/topicos/{id}`  | Apaga um tópico existente.                             | Protegido  |
 
 ---
 
@@ -48,14 +53,14 @@ O foco inicial foi construir um CRUD robusto e funcional para o recurso principa
 
 Este projeto foi construído com as seguintes tecnologias:
 
-* **Java 17:** A versão LTS mais recente do Java.
-* **Spring Boot 3:** Para uma configuração rápida e robusta da aplicação.
-* **Spring Security:** Para a camada de segurança.
-* **Spring Data JPA:** Para a persistência de dados de forma simplificada.
-* **Maven:** Para a gestão de dependências e do build do projeto.
-* **MySQL 8:** O nosso banco de dados relacional.
-* **Flyway:** Para o versionamento e migração do banco de dados.
-* **Lombok:** Para reduzir o código boilerplate.
+- **Java 17:** A versão LTS mais recente do Java.
+- **Spring Boot 3:** Para uma configuração rápida e robusta da aplicação.
+- **Spring Security:** Para a camada de segurança.
+- **Spring Data JPA:** Para a persistência de dados de forma simplificada.
+- **Maven:** Para a gestão de dependências e do build do projeto.
+- **MySQL 8:** O nosso banco de dados relacional.
+- **Flyway:** Para o versionamento e migração do banco de dados.
+- **Lombok:** Para reduzir o código boilerplate.
 
 ---
 
@@ -63,11 +68,36 @@ Este projeto foi construído com as seguintes tecnologias:
 
 ```bash
 # 1. Clone o repositório
-$ git clone [https://github.com/luizdessunte/ForumHub.git](https://github.com/luizdessunte/ForumHub.git)
+$ git clone https://github.com/luizdessunte/ForumHub.git
 
-# 2. Aceda à pasta do projeto
+# 2. Acesse a pasta do projeto
 $ cd ForumHub
 
-# 3. Execute a aplicação (requer Maven e Java 17 instalados)
+# 3. Configure as suas variáveis de ambiente
+# No arquivo `application.properties`, altere as seguintes linhas com os seus dados:
+# spring.datasource.username=SEU_USUARIO_MYSQL
+# spring.datasource.password=SUA_SENHA_MYSQL
+# api.security.token.secret=SUA_CHAVE_SECRETA_PARA_JWT
+
+# 4. Execute a aplicação (requer Maven e Java 17 instalados)
 $ mvn spring-boot:run
 ```
+
+A API estará disponível em http://localhost:8080.
+
+---
+
+## 👨‍💻 Autor
+Desenvolvido por Luiz Dessunte.
+
+<p>
+  <a href="https://www.linkedin.com/in/luiz-dessunte/" target="_blank" style="text-decoration:none;">
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" width="30" height="30" alt="LinkedIn" style="vertical-align:middle;"/>
+    <span style="vertical-align:middle; margin-left: 8px; font-weight: bold; color: #0A66C2;">LinkedIn</span>
+  </a>
+  &nbsp;&nbsp;
+  <a href="https://github.com/luizdessunte" target="_blank" style="text-decoration:none;">
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="30" height="30" alt="GitHub" style="vertical-align:middle;"/>
+    <span style="vertical-align:middle; margin-left: 8px; font-weight: bold; color: #333;">GitHub</span>
+  </a>
+</p>
