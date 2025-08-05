@@ -1,4 +1,4 @@
-package br.com.alura.forumHub.infra.security.autenticacao;
+package br.com.alura.forumHub.infra.autenticacao;
 
 import br.com.alura.forumHub.usuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;

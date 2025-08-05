@@ -25,8 +25,13 @@ public class Topico {
     private String autor;
     private String curso;
 
+    // 1. NOVO ATRIBUTO ADICIONADO AQUI
+    private Boolean ativo;
+
     // Construtor que recebe o DTO de cadastro
     public Topico(DadosCadastroTopico dados) {
+        // 2. LINHA NOVA ADICIONADA AO CONSTRUTOR
+        this.ativo = true; // Todo novo tópico começa como ativo
         this.titulo = dados.titulo();
         this.mensagem = dados.mensagem();
         this.autor = dados.autor();
@@ -52,4 +57,8 @@ public class Topico {
         }
     }
 
+    // 3. NOVO MÉTODO ADICIONADO AQUI (para a exclusão lógica)
+    public void excluir() {
+        this.ativo = false;
+    }
 }
