@@ -1,5 +1,7 @@
 package br.com.alura.forumHub.topico;
 
+import br.com.alura.forumHub.curso.Curso;
+import br.com.alura.forumHub.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -22,24 +24,27 @@ public class Topico {
     private String mensagem;
     private LocalDateTime dataCriacao = LocalDateTime.now();
     private String status;
-    private String autor;
-    private String curso;
 
-    // 1. NOVO ATRIBUTO ADICIONADO AQUI
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id")
+    private Usuario autor;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "curso_id")
+    private Curso curso;
+
     private Boolean ativo;
 
-    // Construtor que recebe o DTO de cadastro
-    public Topico(DadosCadastroTopico dados) {
-        // 2. LINHA NOVA ADICIONADA AO CONSTRUTOR
-        this.ativo = true; // Todo novo tópico começa como ativo
+    public Topico(DadosCadastroTopico dados, Usuario autor, Curso curso) {
+        this.ativo = true;
         this.titulo = dados.titulo();
         this.mensagem = dados.mensagem();
-        this.autor = dados.autor();
-        this.curso = dados.curso();
-        this.status = "NAO_RESPONDIDO"; // Status inicial padrão
+        this.autor = autor;
+        this.curso = curso;
+        this.status = "NAO_RESPONDIDO";
     }
 
-    public void atualizarInformacoes(DadosAtualizacaoTopico dados) {
+    public void atualizarInformacoes(DadosAtualizacaoTopico dados, Curso curso) {
         if (dados.titulo() != null) {
             this.titulo = dados.titulo();
         }
@@ -49,15 +54,11 @@ public class Topico {
         if (dados.status() != null) {
             this.status = dados.status();
         }
-        if (dados.autor() != null) {
-            this.autor = dados.autor();
-        }
-        if (dados.curso() != null) {
-            this.curso = dados.curso();
+        if (curso != null) {
+            this.curso = curso;
         }
     }
 
-    // 3. NOVO MÉTODO ADICIONADO AQUI (para a exclusão lógica)
     public void excluir() {
         this.ativo = false;
     }
