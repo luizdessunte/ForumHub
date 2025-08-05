@@ -1,7 +1,7 @@
 # API ForumHub 🗣️
 
 <p align="center">
-  <img src="https://i.imgur.com/m8S1FfT.png" width="200" alt="Logo do ForumHub">
+  <img alt="ForumHub Logo" src="https://raw.githubusercontent.com/luizdessunte/ForumHub/main/src/main/resources/static/images/logo.png" width="200">
 </p>
 
 <p align="center">
@@ -31,6 +31,7 @@ Além dos tópicos, novas rotas estão sendo implementadas para tornar o fórum 
 
 - [ ] **Usuários** (`/usuario`): Cadastro, listagem, atualização e exclusão de usuários.
 - [ ] **Respostas** (`/respostas`): Cadastro, listagem, atualização e exclusão de respostas aos tópicos.
+- [ ] **Tratamento de Erros**: Implementação de respostas padronizadas para erros de validação, autenticação e exceções da API.
 
 Essas funcionalidades estão em desenvolvimento e serão lançadas em breve.
 
