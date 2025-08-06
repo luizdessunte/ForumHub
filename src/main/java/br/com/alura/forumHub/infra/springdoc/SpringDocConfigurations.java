@@ -15,14 +15,16 @@ public class SpringDocConfigurations {
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
+                // Configura o esquema de segurança para autenticação JWT
                 .components(new Components()
                         .addSecuritySchemes("bearer-key",
                                 new SecurityScheme()
                                         .type(SecurityScheme.Type.HTTP)
                                         .scheme("bearer")
                                         .bearerFormat("JWT")))
-                // LINHA ADICIONADA: Aplica o esquema de segurança a todos os endpoints
+                // Aplica o esquema de segurança a todos os endpoints
                 .addSecurityItem(new SecurityRequirement().addList("bearer-key"))
+                // Define as informações gerais da API, como título, descrição e contato
                 .info(new Info()
                         .title("ForumHub API")
                         .description("API Rest da aplicação ForumHub, contendo as funcionalidades de CRUD de tópicos e autenticação de utilizadores.")

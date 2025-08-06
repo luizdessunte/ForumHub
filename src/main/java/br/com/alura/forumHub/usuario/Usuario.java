@@ -27,6 +27,7 @@ public class Usuario implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        // Retorna a role padrão do usuário. Para múltiplos perfis, adapte este método.
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
@@ -39,13 +40,16 @@ public class Usuario implements UserDetails {
     public String getUsername() {
         return login;
     }
-    // Para simplificar, vamos retornar true para os métodos abaixo
+
     @Override
     public boolean isAccountNonExpired() { return true; }
+
     @Override
     public boolean isAccountNonLocked() { return true; }
+
     @Override
     public boolean isCredentialsNonExpired() { return true; }
+
     @Override
     public boolean isEnabled() { return true; }
 }

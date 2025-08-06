@@ -1,6 +1,8 @@
 package br.com.alura.forumHub.controller;
 
+import br.com.alura.forumHub.curso.CursoRepository;
 import br.com.alura.forumHub.topico.*;
+import br.com.alura.forumHub.usuario.UsuarioRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,33 +20,38 @@ public class TopicoController {
     @Autowired
     private TopicoRepository repository;
 
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private CursoRepository cursoRepository;
+
     @PostMapping
     @Transactional
     public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroTopico dados, UriComponentsBuilder uriBuilder) {
-        if (repository.existsByTituloAndMensagem(dados.titulo(), dados.mensagem())) {
-            return ResponseEntity.badRequest().body("Tópico duplicado: já existe um tópico com o mesmo título e mensagem.");
-        }
+        // Obtém o autor e o curso a partir dos IDs fornecidos
+        var autor = usuarioRepository.getReferenceById(dados.idAutor());
+        var curso = cursoRepository.getReferenceById(dados.idCurso());
 
-        var topico = new Topico(dados);
+        // Cria e salva um novo tópico
+        var topico = new Topico(dados, autor, curso);
         repository.save(topico);
 
+        // Retorna a URI do recurso criado
         var uri = uriBuilder.path("/topicos/{id}").buildAndExpand(topico.getId()).toUri();
         return ResponseEntity.created(uri).body(new DadosListagemTopico(topico));
     }
 
-    // ########## MÉTODO LISTAR ATUALIZADO ##########
     @GetMapping
     public ResponseEntity<Page<DadosListagemTopico>> listar(@PageableDefault(size = 10, sort = {"dataCriacao"}) Pageable paginacao) {
-        // A alteração aqui é que, em vez de chamar repository.findAll(),
-        // chamamos o nosso novo método repository.findAllByAtivoTrue().
-        // Isto garante que a lista devolvida contém apenas os tópicos
-        // que estão marcados como ativos no banco de dados.
+        // Lista todos os tópicos ativos com paginação
         var page = repository.findAllByAtivoTrue(paginacao).map(DadosListagemTopico::new);
         return ResponseEntity.ok(page);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity detalhar(@PathVariable Long id) {
+        // Detalha um tópico específico pelo ID
         var topico = repository.getReferenceById(id);
         return ResponseEntity.ok(new DadosListagemTopico(topico));
     }
@@ -52,26 +59,20 @@ public class TopicoController {
     @PutMapping("/{id}")
     @Transactional
     public ResponseEntity atualizar(@PathVariable Long id, @RequestBody @Valid DadosAtualizacaoTopico dados) {
+        // Atualiza as informações de um tópico existente
         var topico = repository.getReferenceById(id);
-        topico.atualizarInformacoes(dados);
+        var curso = dados.idCurso() != null ? cursoRepository.getReferenceById(dados.idCurso()) : null;
+        topico.atualizarInformacoes(dados, curso);
+
         return ResponseEntity.ok(new DadosListagemTopico(topico));
     }
 
-    // ########## MÉTODO EXCLUIR ATUALIZADO ##########
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity excluir(@PathVariable Long id) {
-        // 1. Carregamos o tópico do banco de dados.
         var topico = repository.getReferenceById(id);
-
-        // 2. Em vez de chamar repository.deleteById(id), que apaga o registo,
-        //    chamamos o nosso novo método topico.excluir().
-        //    Este método apenas altera o campo "ativo" para "false".
         topico.excluir();
 
-        // 3. A anotação @Transactional garante que esta alteração será
-        //    salva no banco de dados quando o método terminar.
         return ResponseEntity.noContent().build();
     }
-
 }

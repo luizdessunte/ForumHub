@@ -28,16 +28,19 @@ public class SecurityConfigurations {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(csrf -> csrf.disable())
+                // Configura a aplicação para usar sessões stateless
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
+                    // Permite acesso público ao login e registro de usuários
                     req.requestMatchers(HttpMethod.POST, "/login").permitAll();
                     req.requestMatchers(HttpMethod.POST, "/usuarios/registrar").permitAll();
-                    // Adicione a linha abaixo para liberar o Swagger
+                    // Permite acesso público à documentação Swagger
                     req.requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll();
                     req.anyRequest().authenticated();
                 })
+                // Adiciona o filtro de segurança antes do filtro padrão de autenticação
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-                // NOVO: Configura o nosso tratador de erros de segurança
+                // Configura o tratador de erros de autenticação e autorização
                 .exceptionHandling(eh -> eh
                         .authenticationEntryPoint(tratamentoDeErrosDeSeguranca)
                         .accessDeniedHandler(tratamentoDeErrosDeSeguranca)
@@ -47,11 +50,13 @@ public class SecurityConfigurations {
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        // Retorna o gerenciador de autenticação configurado
         return configuration.getAuthenticationManager();
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
+        // Configura o encoder de senhas usando BCrypt
         return new BCryptPasswordEncoder();
     }
 }

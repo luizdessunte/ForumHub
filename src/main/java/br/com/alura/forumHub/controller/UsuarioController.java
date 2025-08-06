@@ -26,16 +26,17 @@ public class UsuarioController {
     @PostMapping("/registrar")
     @Transactional
     public ResponseEntity registrar(@RequestBody @Valid DadosRegistroUsuario dados) {
-        // Verifica se o login já existe
+        // Verifica se o login já existe no banco de dados
         if (repository.findByLogin(dados.login()) != null) {
-            return ResponseEntity.badRequest().body("Login já existente.");
+            return ResponseEntity.badRequest().body("Erro: O login informado já está em uso.");
         }
 
-        // Criptografa a senha antes de salvar
+        // Criptografa a senha antes de salvar o usuário
         var senhaCriptografada = passwordEncoder.encode(dados.senha());
         var usuario = new Usuario(null, dados.login(), senhaCriptografada);
         repository.save(usuario);
 
-        return ResponseEntity.ok().body("Utilizador registado com sucesso!");
+        // Retorna uma mensagem de sucesso após o registro
+        return ResponseEntity.ok().body("Sucesso: Utilizador registado com sucesso!");
     }
 }

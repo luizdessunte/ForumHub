@@ -26,11 +26,14 @@ public class AutenticacaoController {
 
     @PostMapping
     public ResponseEntity efetuarLogin(@RequestBody @Valid DadosAutenticacao dados) {
+        // Cria um token de autenticação com base no login e senha fornecidos
         var authenticationToken = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
         var authentication = manager.authenticate(authenticationToken);
 
+        // Gera um token JWT para o usuário autenticado
         var tokenJWT = tokenService.gerarToken((Usuario) authentication.getPrincipal());
 
+        // Retorna o token JWT no corpo da resposta
         return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
     }
 }

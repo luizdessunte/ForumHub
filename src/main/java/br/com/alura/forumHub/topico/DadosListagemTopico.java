@@ -11,14 +11,13 @@ public record DadosListagemTopico(
         String autor,
         String curso) {
 
-    // Construtor que converte uma entidade Topico para este DTO
     public DadosListagemTopico(Topico topico) {
         this(topico.getId(),
                 topico.getTitulo(),
                 topico.getMensagem(),
                 topico.getDataCriacao(),
                 topico.getStatus(),
-                topico.getAutor(),
-                topico.getCurso());
+                topico.getAutor().getLogin(), // Alterado para obter o login do objeto Usuario
+                topico.getCurso().getNome()); // Alterado para obter o nome do objeto Curso
     }
 }

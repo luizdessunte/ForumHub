@@ -1,6 +1,7 @@
 package br.com.alura.forumHub.topico;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record DadosCadastroTopico(
         @NotBlank(message = "Título é obrigatório")
@@ -9,9 +10,9 @@ public record DadosCadastroTopico(
         @NotBlank(message = "Mensagem é obrigatória")
         String mensagem,
 
-        @NotBlank(message = "Autor é obrigatório")
-        String autor,
+        @NotNull(message = "ID do autor é obrigatório")
+        Long idAutor,
 
-        @NotBlank(message = "Curso é obrigatório")
-        String curso) {
+        @NotNull(message = "ID do curso é obrigatório")
+        Long idCurso) {
 }

@@ -36,6 +36,7 @@ public class Topico {
     private Boolean ativo;
 
     public Topico(DadosCadastroTopico dados, Usuario autor, Curso curso) {
+        // Construtor utilizado para criar um novo tópico a partir dos dados recebidos.
         this.ativo = true;
         this.titulo = dados.titulo();
         this.mensagem = dados.mensagem();
@@ -45,6 +46,7 @@ public class Topico {
     }
 
     public void atualizarInformacoes(DadosAtualizacaoTopico dados, Curso curso) {
+        // Atualiza apenas os campos informados no DTO.
         if (dados.titulo() != null) {
             this.titulo = dados.titulo();
         }
@@ -60,6 +62,7 @@ public class Topico {
     }
 
     public void excluir() {
+        // Exclusão lógica do tópico.
         this.ativo = false;
     }
 }

@@ -1,9 +1,9 @@
 package br.com.alura.forumHub.infra.exception;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,34 +14,29 @@ public class TratadorDeErros {
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity tratarErro404() {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new ErroResponse("Recurso não encontrado.", "O recurso solicitado não foi localizado."));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Recurso não encontrado.");
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity tratarErro400(MethodArgumentNotValidException ex) {
         var erros = ex.getFieldErrors();
-        return ResponseEntity.badRequest().body(
-                new ErroResponse("Erro de validação.",
-                        erros.stream().map(DadosErroValidacao::new).toList())
-        );
+        return ResponseEntity.badRequest().body(erros.stream().map(DadosErroValidacao::new).toList());
+    }
+
+    // Trata erros de violação de constraints do banco de dados (ex: campo único)
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity tratarErroDeIntegridadeDeDados(DataIntegrityViolationException ex) {
+        return ResponseEntity.badRequest().body("Erro de integridade de dados: " + ex.getMostSpecificCause().getMessage());
     }
 
     @ExceptionHandler(ValidacaoException.class)
     public ResponseEntity tratarErroRegraDeNegocio(ValidacaoException ex) {
-        return ResponseEntity.badRequest().body(new ErroResponse("Regra de negócio violada.", ex.getMessage()));
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity tratarErro500(Exception ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErroResponse("Erro inesperado.", "Ocorreu um erro interno. Tente novamente mais tarde."));
-    }
-
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity tratarErro403(AccessDeniedException ex) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(new ErroResponse("Acesso negado.", "Você não tem permissão para acessar este recurso."));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro inesperado: " + ex.getLocalizedMessage());
     }
 
     private record DadosErroValidacao(String campo, String mensagem) {
@@ -49,6 +44,4 @@ public class TratadorDeErros {
             this(erro.getField(), erro.getDefaultMessage());
         }
     }
-
-    private record ErroResponse(String erro, Object detalhe) {}
 }

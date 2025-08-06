@@ -19,6 +19,7 @@ public class TokenService {
     private String secret;
 
     public String gerarToken(Usuario usuario) {
+        // Gera um token JWT para o usuário fornecido
         try {
             var algoritmo = Algorithm.HMAC256(secret);
             return JWT.create()
@@ -32,6 +33,7 @@ public class TokenService {
     }
 
     public String getSubject(String tokenJWT) {
+        // Extrai o subject (usuário) de um token JWT válido
         try {
             var algoritmo = Algorithm.HMAC256(secret);
             return JWT.require(algoritmo)
@@ -45,6 +47,7 @@ public class TokenService {
     }
 
     private Instant dataExpiracao() {
+        // Define a data de expiração do token (2 horas a partir de agora)
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }
 }

@@ -27,7 +27,7 @@ public class TratamentoDeErrosDeSeguranca implements AuthenticationEntryPoint, A
         response.setContentType("application/json;charset=UTF-8");
 
         Map<String, String> data = new HashMap<>();
-        data.put("error", "Falha na autenticação. Verifique as suas credenciais.");
+        data.put("erro", "Falha na autenticação. Verifique as suas credenciais ou o token enviado.");
 
         response.getWriter().write(objectMapper.writeValueAsString(data));
     }
@@ -39,7 +39,7 @@ public class TratamentoDeErrosDeSeguranca implements AuthenticationEntryPoint, A
         response.setContentType("application/json;charset=UTF-8");
 
         Map<String, String> data = new HashMap<>();
-        data.put("error", "Acesso negado. Você não tem permissão para aceder a este recurso.");
+        data.put("erro", "Acesso negado. Você não tem permissão para aceder a este recurso.");
 
         response.getWriter().write(objectMapper.writeValueAsString(data));
     }

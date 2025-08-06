@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+    // Busca um usuário pelo login e retorna os detalhes de autenticação
     UserDetails findByLogin(String login);
 
 }
