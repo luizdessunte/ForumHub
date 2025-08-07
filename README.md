@@ -14,17 +14,25 @@ Bem-vindo ao **ForumHub**! Esta é uma API REST desenvolvida como o desafio fina
 
 -   [x] 🔐 **Segurança:** Sistema de login e registro com geração de token JWT.
 -   [x] 🛡️ **Controle de Acesso:** Endpoints protegidos, exigindo um token de autenticação válido.
--   [x] 📄 **Gestão de Tópicos:** CRUD completo com exclusão lógica.
--   [x] 💬 **Gestão de Respostas:** CRUD completo para as respostas dos tópicos.
--   [x] ⚙️ **Tratamento de Erros:** Respostas de erro padronizadas para todos os cenários.
+-   [x] 📄 **Gestão de Tópicos:** CRUD completo com exclusão lógica e validação de propriedade.
+-   [x] 💬 **Gestão de Respostas:** CRUD completo para as respostas dos tópicos com validação de propriedade.
+-   [x] 👥 **Gestão de Usuários:** Sistema de registro e autenticação com diferentes roles.
+-   [x] 📚 **Gestão de Cursos:** Sistema básico de cursos para categorização de tópicos.
+-   [x] ⚙️ **Tratamento de Erros:** Respostas de erro padronizadas para todos os cenários (400, 401, 403, 404, 500).
 -   [x] 📖 **Documentação:** Interface interativa da API gerada com Swagger (OpenAPI).
 -   [x] 👑 **Sistema de Permissões (Roles):** Diferenciação de permissões entre usuários (`USER`) e administradores (`ADMIN`), protegendo endpoints de modificação e exclusão.
+-   [x] 🗄️ **Migrações de Banco:** Sistema completo de versionamento com Flyway (7 migrações implementadas).
+-   [x] 🧪 **Testes Automatizados:** Testes unitários e de integração para controllers principais.
+-   [x] 🔒 **Validação de Propriedade:** Usuários só podem modificar/excluir seus próprios tópicos e respostas (ou admins).
 
 ---
 
-## 🚧 Próximos Passos
+## 🚧 Futuras Funcionalidades
 
--   [ ] **Testes Automatizados:** Expandir a cobertura de testes para todos os endpoints.
+-   [ ] **Expansão de Testes:** Testes para validação de JWT e autorização específica por roles.
+-   [ ] **Testes de Endpoints de Autenticação:** Cobertura completa para `/login` e `/usuarios/registrar`.
+-   [ ] **Implementação de Perfis:** Configuração para diferentes ambientes (dev, test, prod).
+-   [ ] **Métricas e Monitoramento:** Implementação de health checks e métricas de performance.
 
 ---
 
@@ -95,6 +103,82 @@ $ mvn spring-boot:run
 A API estará disponível em http://localhost:8080.
 
 A documentação do Swagger estará disponível em http://localhost:8080/swagger-ui.html.
+
+---
+
+## ▶️ Exemplos de Requisições
+
+### Cadastro de Usuário
+```json
+POST /usuarios/registrar
+{
+  "login": "usuario123",
+  "senha": "minhaSenhaSegura"
+}
+```
+
+### Login
+```json
+POST /login
+{
+  "login": "usuario123",
+  "senha": "minhaSenhaSegura"
+}
+```
+
+### Cadastro de Tópico
+```json
+POST /topicos
+{
+  "titulo": "Dúvida sobre Spring Boot",
+  "mensagem": "Como faço para configurar o Flyway?",
+  "curso": "Java"
+}
+```
+
+### Cadastro de Resposta
+```json
+POST /respostas
+{
+  "mensagem": "Você pode configurar o Flyway no application.properties.",
+  "topicoId": 1
+}
+```
+
+### Exemplo de Resposta de Erro 403
+```json
+{
+  "status": 403,
+  "error": "Forbidden",
+  "message": "Acesso negado. Você não possui permissão para acessar este recurso."
+}
+```
+
+---
+
+## 🤝 Contribuição
+
+Contribuições são bem-vindas! Para contribuir com o projeto:
+
+1. Faça um fork do repositório.
+2. Crie uma branch com sua feature ou correção (`git checkout -b minha-feature`).
+3. Commit suas alterações (`git commit -m 'Minha contribuição'`).
+4. Faça o push para sua branch (`git push origin minha-feature`).
+5. Abra um Pull Request.
+
+---
+
+## 📚 Documentação Oficial
+
+- [Documentação Spring Boot](https://docs.spring.io/spring-boot/docs/current/reference/html/)
+- [Documentação Spring Security](https://docs.spring.io/spring-security/reference/)
+- [Documentação Spring Data JPA](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/)
+- [Documentação JWT](https://jwt.io/introduction/)
+- [Documentação Maven](https://maven.apache.org/guides/index.html)
+- [Documentação MySQL](https://dev.mysql.com/doc/)
+- [Documentação Flyway](https://flywaydb.org/documentation/)
+- [Documentação Lombok](https://projectlombok.org/features/all)
+- [Documentação Swagger/OpenAPI](https://swagger.io/docs/)
 
 👨‍💻 Autor:
 Desenvolvido por Henrique Dessunte
