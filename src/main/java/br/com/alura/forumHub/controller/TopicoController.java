@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -26,6 +27,8 @@ public class TopicoController {
     @Autowired
     private CursoRepository cursoRepository;
 
+    //Método Cadastrar
+
     @PostMapping
     @Transactional
     public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroTopico dados, UriComponentsBuilder uriBuilder) {
@@ -42,12 +45,16 @@ public class TopicoController {
         return ResponseEntity.created(uri).body(new DadosListagemTopico(topico));
     }
 
+    // Método Listar
+
     @GetMapping
     public ResponseEntity<Page<DadosListagemTopico>> listar(@PageableDefault(size = 10, sort = {"dataCriacao"}) Pageable paginacao) {
         // Lista todos os tópicos ativos com paginação
         var page = repository.findAllByAtivoTrue(paginacao).map(DadosListagemTopico::new);
         return ResponseEntity.ok(page);
     }
+
+    //Método Detalhar
 
     @GetMapping("/{id}")
     public ResponseEntity detalhar(@PathVariable Long id) {
@@ -56,8 +63,10 @@ public class TopicoController {
         return ResponseEntity.ok(new DadosListagemTopico(topico));
     }
 
+    // Método Atualizar
     @PutMapping("/{id}")
     @Transactional
+    @PreAuthorize("hasRole('ADMIN') or @securityService.isAutorDoTopico(authentication, #id)")
     public ResponseEntity atualizar(@PathVariable Long id, @RequestBody @Valid DadosAtualizacaoTopico dados) {
         // Atualiza as informações de um tópico existente
         var topico = repository.getReferenceById(id);
@@ -67,8 +76,11 @@ public class TopicoController {
         return ResponseEntity.ok(new DadosListagemTopico(topico));
     }
 
+    // Método Excluir
     @DeleteMapping("/{id}")
     @Transactional
+    @PreAuthorize("hasRole('ADMIN') or @securityService.isAutorDoTopico(authentication, #id)")
+
     public ResponseEntity excluir(@PathVariable Long id) {
         var topico = repository.getReferenceById(id);
         topico.excluir();

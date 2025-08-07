@@ -1,31 +1,29 @@
 # API ForumHub 🗣️
 
-
-
 <p align="center">
-  <img alt="Status do Projeto" src="https://img.shields.io/badge/STATUS-EM%20DESENVOLVIMENTO-yellow">
+  <img alt="Status do Projeto" src="https://img.shields.io/badge/STATUS-CONCLUÍDO-brightgreen">
 </p>
 
 ## 🎯 Sobre o Projeto
 
-Bem-vindo ao **ForumHub**! Esta é uma API REST desenvolvida como o desafio final de backend do programa **Alura ONE + Oracle Next Education (ONE)**. O objetivo foi construir um sistema de controlo de tópicos para um fórum, aplicando os conceitos mais importantes do desenvolvimento backend com o ecossistema Spring.
+Bem-vindo ao **ForumHub**! Esta é uma API REST desenvolvida como o desafio final de backend do programa **Alura ONE + Oracle Next Education (ONE)**. O objetivo foi construir um sistema de controle de tópicos para um fórum, aplicando os conceitos mais importantes do desenvolvimento backend com o ecossistema Spring.
 
 ---
 
 ## ✅ Funcionalidades Implementadas
 
--   [x] 🔐 **Segurança:** Sistema de login e registo com geração de token JWT.
--   [x] 🛡️ **Controlo de Acesso:** Endpoints protegidos, requerendo um token de autenticação válido.
+-   [x] 🔐 **Segurança:** Sistema de login e registro com geração de token JWT.
+-   [x] 🛡️ **Controle de Acesso:** Endpoints protegidos, exigindo um token de autenticação válido.
 -   [x] 📄 **Gestão de Tópicos:** CRUD completo com exclusão lógica.
 -   [x] 💬 **Gestão de Respostas:** CRUD completo para as respostas dos tópicos.
 -   [x] ⚙️ **Tratamento de Erros:** Respostas de erro padronizadas para todos os cenários.
 -   [x] 📖 **Documentação:** Interface interativa da API gerada com Swagger (OpenAPI).
+-   [x] 👑 **Sistema de Permissões (Roles):** Diferenciação de permissões entre usuários (`USER`) e administradores (`ADMIN`), protegendo endpoints de modificação e exclusão.
 
 ---
 
 ## 🚧 Próximos Passos
 
--   [ ] **Sistema de Permissões (Roles):** Diferenciar permissões entre utilizadores e administradores.
 -   [ ] **Testes Automatizados:** Expandir a cobertura de testes para todos os endpoints.
 
 ---
@@ -34,17 +32,17 @@ Bem-vindo ao **ForumHub**! Esta é uma API REST desenvolvida como o desafio fina
 
 | Verbo HTTP | Endpoint                  | Descrição                                         | Acesso       |
 |------------|---------------------------|---------------------------------------------------|--------------|
-| `POST`     | `/login`                  | Autentica um utilizador e devolve um token JWT.   | **Público** |
-| `POST`     | `/usuarios/registrar`     | Regista um novo utilizador no sistema.            | **Público** |
+| `POST`     | `/login`                  | Autentica um usuário e devolve um token JWT.      | **Público** |
+| `POST`     | `/usuarios/registrar`     | Registra um novo usuário no sistema.              | **Público** |
 | `POST`     | `/topicos`                | Cadastra um novo tópico.                          | **Protegido**|
 | `GET`      | `/topicos`                | Lista todos os tópicos ativos (paginado).         | **Protegido**|
 | `GET`      | `/topicos/{id}`           | Detalha um tópico específico.                     | **Protegido**|
-| `PUT`      | `/topicos/{id}`           | Atualiza um tópico existente.                     | **Protegido**|
-| `DELETE`   | `/topicos/{id}`           | Apaga um tópico (exclusão lógica).                | **Protegido**|
+| `PUT`      | `/topicos/{id}`           | Atualiza um tópico existente.                     | **Protegido (Autor ou Admin)**|
+| `DELETE`   | `/topicos/{id}`           | Apaga um tópico (exclusão lógica).                | **Protegido (Autor ou Admin)**|
 | `POST`     | `/respostas`              | Cadastra uma nova resposta a um tópico.           | **Protegido**|
 | `GET`      | `/respostas/topico/{idTopico}` | Lista todas as respostas de um tópico.           | **Protegido**|
-| `PUT`      | `/respostas/{id}`         | Atualiza uma resposta existente.                  | **Protegido**|
-| `DELETE`   | `/respostas/{id}`         | Apaga uma resposta existente.                     | **Protegido**|
+| `PUT`      | `/respostas/{id}`         | Atualiza uma resposta existente.                  | **Protegido (Autor ou Admin)**|
+| `DELETE`   | `/respostas/{id}`         | Apaga uma resposta existente.                     | **Protegido (Autor ou Admin)**|
 
 ---
 
@@ -53,14 +51,14 @@ Bem-vindo ao **ForumHub**! Esta é uma API REST desenvolvida como o desafio fina
 Este projeto foi construído com as seguintes tecnologias:
 
 * ![Java](https://img.shields.io/badge/Java-17-007396?style=for-the-badge&logo=java&logoColor=white) **Java 17**: A versão LTS mais recente do Java.
-* ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.0-6DB33F?style=for-the-badge&logo=springboot&logoColor=white) **Spring Boot 3**: Para uma configuração rápida e robusta da aplicação.
-* ![Spring Security](https://img.shields.io/badge/Spring%20Security-6.0-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white) **Spring Security**: Para a camada de segurança e autenticação.
-* ![Spring Data JPA](https://img.shields.io/badge/Spring%20Data%20JPA-3.0-6DB33F?style=for-the-badge&logo=spring&logoColor=white) **Spring Data JPA**: Para a persistência de dados de forma simplificada.
+* ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3-6DB33F?style=for-the-badge&logo=springboot&logoColor=white) **Spring Boot 3**: Para uma configuração rápida e robusta da aplicação.
+* ![Spring Security](https://img.shields.io/badge/Spring%20Security-6-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white) **Spring Security**: Para a camada de segurança e autenticação.
+* ![Spring Data JPA](https://img.shields.io/badge/Spring%20Data%20JPA-3-6DB33F?style=for-the-badge&logo=spring&logoColor=white) **Spring Data JPA**: Para a persistência de dados de forma simplificada.
 * ![JWT](https://img.shields.io/badge/JWT-JSON%20Web%20Token-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white) **JWT**: Para a geração de tokens de acesso.
-* ![Maven](https://img.shields.io/badge/Maven-3.8.6-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white) **Maven**: Para a gestão de dependências e do build do projeto.
-* ![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white) **MySQL 8**: O nosso banco de dados relacional.
-* ![Flyway](https://img.shields.io/badge/Flyway-11.0-CC0200?style=for-the-badge&logo=flyway&logoColor=white) **Flyway**: Para o versionamento e migração do banco de dados.
-* ![Lombok](https://img.shields.io/badge/Lombok-1.18.24-000000?style=for-the-badge&logo=lombok&logoColor=white) **Lombok**: Para reduzir o código boilerplate.
+* ![Maven](https://img.shields.io/badge/Maven-4-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white) **Maven**: Para a gestão de dependências e do build do projeto.
+* ![MySQL](https://img.shields.io/badge/MySQL-8-4479A1?style=for-the-badge&logo=mysql&logoColor=white) **MySQL 8**: O nosso banco de dados relacional.
+* ![Flyway](https://img.shields.io/badge/Flyway-10-CC0200?style=for-the-badge&logo=flyway&logoColor=white) **Flyway**: Para o versionamento e migração do banco de dados.
+* ![Lombok](https://img.shields.io/badge/Lombok-1.18-000000?style=for-the-badge&logo=lombok&logoColor=white) **Lombok**: Para reduzir o código boilerplate.
 * ![Swagger](https://img.shields.io/badge/Swagger-OpenAPI-85EA2D?style=for-the-badge&logo=swagger&logoColor=black) **SpringDoc OpenAPI (Swagger)**: Para a documentação automática da API.
 
 ---
@@ -98,7 +96,7 @@ A API estará disponível em http://localhost:8080.
 
 A documentação do Swagger estará disponível em http://localhost:8080/swagger-ui.html.
 
-👨‍💻 Autor: 
+👨‍💻 Autor:
 Desenvolvido por Henrique Dessunte
 <p align="left">
 <a href="https://www.linkedin.com/in/luiz-dessunte/" target="_blank">

@@ -25,31 +25,37 @@ public class Usuario implements UserDetails {
     private String login;
     private String senha;
 
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
+    // Construtor para o registro de novos usuários
+    public Usuario(String login, String senha) {
+        this.login = login;
+        this.senha = senha;
+        this.role = UserRole.USER; // Garante que todo novo usuário é um USER por padrão
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Retorna a role padrão do usuário. Para múltiplos perfis, adapte este método.
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        if (this.role == UserRole.ADMIN) {
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        } else {
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        }
     }
 
     @Override
-    public String getPassword() {
-        return senha;
-    }
+    public String getPassword() { return senha; }
 
     @Override
-    public String getUsername() {
-        return login;
-    }
+    public String getUsername() { return login; }
 
     @Override
     public boolean isAccountNonExpired() { return true; }
-
     @Override
     public boolean isAccountNonLocked() { return true; }
-
     @Override
     public boolean isCredentialsNonExpired() { return true; }
-
     @Override
     public boolean isEnabled() { return true; }
 }
